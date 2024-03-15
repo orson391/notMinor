@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Users</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Add User</h2>
+        <form id="add-user-form" onsubmit="addUser(event)">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <select id="role" required>
+                <option value="Teacher">Teacher</option>
+                <option value="Student">Student</option>
+            </select>
+            <button type="submit">Add User</button>
+        </form>
+
+        <h2>Remove User</h2>
+        <form id="remove-user-form">
+            <input type="number" id="remove-user-id" placeholder="User ID to Remove" required>
+            <button type="submit">Remove User</button>
+        </form>
+
+        <h2>Edit User</h2>
+        <form id="edit-user-form">
+            <input type="number" id="edit-user-id" placeholder="User ID to Edit" required>
+            <input type="text" id="new-username" placeholder="New Username" required>
+            <input type="password" id="new-password" placeholder="New Password" required>
+            <select id="new-role" required>
+                <option value="Teacher">Teacher</option>
+                <option value="Student">Student</option>
+            </select>
+            <button type="submit">Edit User</button>
+        </form>
+    </div>
+    <script src="admin_users.js">
+        function addUser(event) {
+    event.preventDefault(); // Prevent form submission
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    var role = document.getElementById('role').value;
+
+    // AJAX request to PHP script
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'admin_users.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            // Handle response
+            if (xhr.status === 200) {
+                alert(xhr.responseText); // Display success message
+                // Clear form fields or update UI as needed
+            } else {
+                console.error('Error:', xhr.status); // Log error
+            }
+        }
+    };
+    // Send form data
+    xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password) + '&role=' + encodeURIComponent(role));
+}
+
+    </script>
+</body>
+</html>
